@@ -175,9 +175,9 @@ function handleAuth(e) {
     alertBox.innerHTML = `<strong>Xác thực thành công!</strong><br>Chào mừng <strong>${fullNameInput}</strong>. Đang chuyển hướng vào hệ thống...`;
     alertBox.style.display = 'block';
 
-    localStorage.setItem('class_access_granted', 'true');
-    localStorage.setItem('user_fullname', fullNameInput);
-    localStorage.setItem('user_studentid', studentIdInput);
+sessionStorage.setItem('class_access_granted', 'true');
+sessionStorage.setItem('user_fullname', fullNameInput);
+sessionStorage.setItem('user_studentid', studentIdInput);
 
     // Chuyển hướng tới index.html sau 1.2s
     setTimeout(() => {
