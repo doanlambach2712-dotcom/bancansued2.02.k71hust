@@ -4,7 +4,7 @@
     <script>
         // Kiểm tra quyền truy cập ngay trước khi tải giao diện
         if (sessionStorage.getItem('class_access_granted') !== 'true') {
-            alert("Bạn chưa xác thực thông tin. Vui lòng đăng nhập trước khi truy cập hệ thống!");
+            alert("Bạn chưa xác thực thông tin. Vui lòng xác thực để truy cập hệ thống!");
             window.location.href = "login.html";
         }
     </script>
