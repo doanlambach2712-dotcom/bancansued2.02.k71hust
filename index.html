@@ -412,8 +412,9 @@ textarea.copybox{min-height:200px;font-family:ui-monospace,Menlo,Consolas,monosp
 <script>
   // Kiểm tra quyền truy cập trước khi cho phép vào giao diện chính
 if (localStorage.getItem('class_access_granted') !== 'true') {
-  alert("Bạn chưa xác thực thông tin. Vui lòng đăng nhập trước khi truy cập hệ thống!");
-  window.location.href = "login.html"; // Chuyển hướng tới trang xác thực login.html
+    alert("Bạn chưa xác thực thông tin. Vui lòng đăng nhập trước khi truy cập hệ thống!");
+    window.location.href = "login.html";
+    return; // Dừng không cho chạy các đoạn code bên dưới
 }
 (() => {
 'use strict';
