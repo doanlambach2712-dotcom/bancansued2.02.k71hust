@@ -1,12 +1,146 @@
-<script>
-// Danh sách 3 sinh viên được phép truy cập
-const ALLOWED_NAMES = [
-  "DOAN LAM BACH",
-  "NGUYEN KHANH LY",
-  "TO BAO NGAN"
-];
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Xác thực truy cập – Hệ thống thông tin quản lý lớp nội bộ – CNGD 02 - K71</title>
+<style>
+:root{
+  --bg:#F3F4F7; --surface:#FFFFFF; --surface-2:#F7F8FA; --ink:#1B2030; --muted:#596173; --line:#DADDE5; --line-strong:#B9BECB;
+  --red:#CE1628; --red-text:#B5101F; --on-red:#FFFFFF; --red-soft:#FCEBED;
+  --gold:#F3C108; --gold-soft:#FFF5D1; --on-gold:#2B2200;
+  --ok:#17744A; --ok-soft:#E1F3E9; --warn:#8A5A00; --warn-soft:#FFF1D0;
+  --focus:#2563EB; --track:#E7E9EF;
+  --font:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101218; --surface:#1A1D26; --surface-2:#212531; --ink:#ECEEF4; --muted:#A0A7B6; --line:#2E3240; --line-strong:#454B5D;
+    --red-text:#FF7482; --red-soft:#3A1A1F; --gold-soft:#3A3010; --ok:#5FD39A; --ok-soft:#143023; --warn:#F3C94F; --warn-soft:#352A0B;
+    --focus:#7FA8FF; --track:#2B2F3C; color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--font);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,h3,h4,p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px;width:100%}
 
-// Hàm loại bỏ dấu tiếng Việt chuẩn xác
+/* Masthead */
+.masthead{background:var(--surface);border-bottom:4px solid transparent;border-image:linear-gradient(90deg,var(--red) 0 88%,var(--gold) 88% 100%) 1}
+.masthead-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:14px;padding-bottom:14px}
+.brand{display:flex;align-items:center;gap:16px;min-width:0}
+.b1{font-size:14px;font-weight:600;color:var(--muted)}
+.b2{font-size:19px;line-height:1.3;font-weight:700;letter-spacing:-.005em}
+.b3{font-size:12.5px;font-weight:700;letter-spacing:.05em;color:var(--red-text);margin-top:3px}
+.term{flex:none;background:var(--gold);color:var(--on-gold);font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;white-space:nowrap}
+
+/* Auth Card Container */
+main.auth-container{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.auth-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;width:100%;max-width:480px;box-shadow:0 10px 30px rgba(0,0,0,0.06);overflow:hidden}
+.auth-header{padding:24px 28px 18px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.auth-header h2{font-size:20px;font-weight:700;color:var(--ink)}
+.auth-header p{font-size:13.5px;color:var(--muted);margin-top:6px}
+
+.auth-body{padding:24px 28px}
+.form-group{margin-bottom:18px}
+.form-group:last-child{margin-bottom:0}
+.form-group label{display:block;font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.form-group label span{color:var(--red-text)}
+input[type="text"], input[type="date"]{
+  width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;min-height:42px;font-size:14px;transition:border-color .15s;
+}
+input[type="text"]:focus, input[type="date"]:focus{
+  border-color:var(--focus);
+}
+
+.btn-submit{
+  width:100%;margin-top:10px;appearance:none;border:1px solid var(--red);background:var(--red);color:var(--on-red);padding:11px 16px;border-radius:6px;font-weight:700;font-size:15px;cursor:pointer;transition:background .15s;
+}
+.btn-submit:hover{background:#B5101F;border-color:#B5101F}
+
+.alert{display:none;padding:12px 16px;border-radius:6px;font-size:13.5px;font-weight:500;margin-bottom:20px;line-height:1.4}
+.alert-error{background:var(--red-soft);color:var(--red-text);border:1px solid rgba(206,22,40,0.2)}
+.alert-success{background:var(--ok-soft);color:var(--ok);border:1px solid rgba(23,116,74,0.2)}
+
+footer{border-top:1px solid var(--line);background:var(--surface);margin-top:auto}
+footer .wrap{padding:18px 20px;color:var(--muted);font-size:13px;text-align:center}
+footer strong{color:var(--red-text)}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <div class="brand">
+      <div>
+        <div class="b1">HỆ THỐNG THÔNG TIN QUẢN LÝ LỚP NỘI BỘ</div>
+        <div class="b2">CÔNG NGHỆ GIÁO DỤC 02 - K71</div>
+        <div class="b3">CỔNG XÁC THỰC QUYỀN TRUY CẬP</div>
+      </div>
+    </div>
+    <div class="term">Nhiệm kì 2026 - 2027</div>
+  </div>
+</header>
+
+<main class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Yêu cầu xác thực danh tính</h2>
+      <p>Vui lòng cung cấp chính xác các thông tin bên dưới để tiếp tục truy cập vào hệ thống nội bộ lớp.</p>
+    </div>
+    
+    <div class="auth-body">
+      <div id="alertBox" class="alert"></div>
+
+      <form id="authForm" onsubmit="handleAuth(event)">
+        <div class="form-group">
+          <label for="fullName">Họ và tên <span>*</span></label>
+          <input type="text" id="fullName" placeholder="Nhập họ và tên" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="studentId">Mã số sinh viên <span>*</span></label>
+          <input type="text" id="studentId" placeholder="Nhập mã số sinh viên" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="dob">Ngày tháng năm sinh <span>*</span></label>
+          <input type="date" id="dob" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Mật khẩu truy cập <span>*</span></label>
+          <input type="password" id="password" placeholder="Nhập mật khẩu được cấp" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-submit">Xác thực & Truy cập</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© Hệ thống quản lý lớp nội bộ <strong>CNGD 02 - K71</strong>. Chỉ dành cho Ban cán sự lớp CNGD 02 - K71!</p>
+  </div>
+</footer>
+
+<script>
+// 1. Khai báo danh sách Họ tên (đã chuẩn hóa không dấu) kèm Mật khẩu tương ứng
+const USERS_DB = {
+  "DOAN LAM BACH": "bachBiThu@Hust26",
+  "NGUYEN KHANH LY": "lyLopTruong@Hust26",
+  "TO BAO NGAN": "nganUyVien@Hust26"
+};
+
+// 2. Hàm loại bỏ dấu tiếng Việt chuẩn
 function removeVietnameseTones(str) {
   if (!str) return "";
   return str.normalize('NFD')
@@ -18,41 +152,46 @@ function removeVietnameseTones(str) {
 function handleAuth(e) {
   e.preventDefault();
   
+  // Lấy giá trị từ cả 4 ô nhập liệu (Họ tên, MSSV, Ngày sinh, Mật khẩu)
   const fullNameInput = document.getElementById('fullName').value.trim();
   const studentIdInput = document.getElementById('studentId').value.trim();
   const dobInput = document.getElementById('dob').value;
+  const passwordInput = document.getElementById('password').value;
   const alertBox = document.getElementById('alertBox');
 
   alertBox.style.display = 'none';
   alertBox.className = 'alert';
 
-  // Chuẩn hóa tên nhập vào (bỏ dấu và viết hoa)
+  // Chuẩn hóa tên nhập vào
   const normalizedInputName = removeVietnameseTones(fullNameInput).toUpperCase();
 
-  // Kiểm tra tên có chính xác nằm trong danh sách hay không
-  const isAuthorized = ALLOWED_NAMES.includes(normalizedInputName);
+  // Lấy mật khẩu chuẩn tương ứng với Họ tên vừa nhập
+  const expectedPassword = USERS_DB[normalizedInputName];
 
-  if (isAuthorized && studentIdInput !== "" && dobInput !== "") {
-    // TRƯỜNG HỢP ĐÚNG
+  // Kiểm tra: Tên phải nằm trong danh sách VÀ mật khẩu phải trùng khớp VÀ đã điền đầy đủ MSSV, Ngày sinh
+  if (expectedPassword && expectedPassword === passwordInput && studentIdInput !== "" && dobInput !== "") {
+    // ĐÚNG: Thông báo và lưu trạng thái
     alertBox.className = 'alert alert-success';
-    alertBox.innerHTML = `<strong>Xác thực thành công!</strong><br>Chào mừng <strong>${fullNameInput}</strong>. Đang chuyển hướng...`;
+    alertBox.innerHTML = `<strong>Xác thực thành công!</strong><br>Chào mừng <strong>${fullNameInput}</strong>. Đang chuyển hướng vào hệ thống...`;
     alertBox.style.display = 'block';
 
-    // Lưu trạng thái đăng nhập
     localStorage.setItem('class_access_granted', 'true');
     localStorage.setItem('user_fullname', fullNameInput);
     localStorage.setItem('user_studentid', studentIdInput);
 
-    // Chuyển hướng chuẩn xác sau 1.2 giây
+    // Chuyển hướng tới index.html sau 1.2s
     setTimeout(() => {
       window.location.href = "index.html";
     }, 1200);
 
   } else {
-    // TRƯỜNG HỢP SAI HẶC KHÔNG CÓ TRONG DANH SÁCH
+    // SAI: Báo lỗi không có quyền / nhập sai thông tin
     alertBox.className = 'alert alert-error';
-    alertBox.innerHTML = '<strong>Hệ thống báo: Không có quyền truy cập!</strong><br>Thông tin của bạn không nằm trong danh sách được phép vào hệ thống. Vui lòng kiểm tra lại thông tin hoặc liên hệ Ban cán sự lớp.';
+    alertBox.innerHTML = '<strong>Xác thực thất bại!</strong><br>Thông tin Họ tên hoặc Mật khẩu không chính xác. Vui lòng kiểm tra lại hoặc liên hệ Ban cán sự lớp.';
     alertBox.style.display = 'block';
   }
 }
 </script>
+
+</body>
+</html>
