@@ -42,7 +42,12 @@
   --focus:#7FA8FF; --track:#2B2F3C; color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);-webkit-text-size-adjust:100%}
+html{
+    scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);
+    -webkit-text-size-adjust:100%;
+    overflow-y:scroll;
+    scrollbar-gutter:stable;
+}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--font);min-height:100%}
 h1,h2,h3,h4,p{margin:0}
 button,input,select,textarea{font:inherit;color:inherit}
