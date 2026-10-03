@@ -17,17 +17,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-    main { /* hoặc tên class/id tương ứng bọc nội dung */
-    flex: 1;
-}
-    footer {
-    margin-top: auto;
-}
 :root{
   --bg:#F3F4F7; --surface:#FFFFFF; --surface-2:#F7F8FA; --ink:#1B2030; --muted:#596173; --line:#DADDE5; --line-strong:#B9BECB;
   --red:#CE1628; --red-text:#B5101F; --on-red:#FFFFFF; --red-soft:#FCEBED;
@@ -403,36 +392,15 @@ textarea.copybox{min-height:200px;font-family:ui-monospace,Menlo,Consolas,monosp
     <p style="margin-top:8px"><button class="linkbtn" id="fundReset">Xóa toàn bộ dữ liệu quỹ</button></p>
   </section>
 
-<!-- TAB / TRANG 4: BAN CÁN SỰ LỚP -->
-<div id="tab4" class="tab-content">
-    <h2 class="section-title"><i class="fa-solid fa-address-book"></i> Ban Chấp Hành Chi Đoàn & Ban Cán Sự Lớp</h2>
-    
-    <div class="bcs-grid">
-        <div class="card-bcs">
-            <h3>Đoàn Lâm Bách</h3>
-            <div class="role">Bí Thư Chi Đoàn</div>
-            <p><i class="fa-solid fa-id-card"></i> MSSV: 202617133</p>
-            <p><i class="fa-solid fa-phone"></i> 0938883455</p>
-            <p><i class="fa-solid fa-envelope"></i> Bach.DL2617133@sis.hust.edu.vn</p>
-        </div>
-
-        <div class="card-bcs">
-            <h3>Nguyễn Khánh Ly</h3>
-            <div class="role">Phó Bí Thư</div>
-            <p><i class="fa-solid fa-id-card"></i> MSSV: 202616172</p>
-            <p><i class="fa-solid fa-phone"></i> 0325338963</p>
-            <p><i class="fa-solid fa-envelope"></i> Ly.NK2616172@sis.hust.edu.vn</p>
-        </div>
-
-        <div class="card-bcs">
-            <h3>Tô Bảo Ngân</h3>
-            <div class="role">Ủy Viên</div>
-            <p><i class="fa-solid fa-id-card"></i> MSSV: 202616347</p>
-            <p><i class="fa-solid fa-phone"></i> 0901485625</p>
-            <p><i class="fa-solid fa-envelope"></i> Ngan.TB2616347@sis.hust.edu.vn</p>
-        </div>
+  <!-- 4. LIÊN HỆ -->
+  <section class="panel" id="p4" role="tabpanel" aria-labelledby="t4" hidden>
+    <div class="ph"><div><h2>Liên hệ với Ban cán sự lớp</h2></div></div>
+    <div class="tablewrap contact">
+      <table>
+        <thead><tr><th>Họ và tên</th><th>Ngày sinh</th><th>MSSV</th><th>Email HUST</th><th>Số điện thoại</th><th>Chức vụ</th></tr></thead>
+        <tbody id="contactBody"></tbody>
+      </table>
     </div>
-</div>
   </section>
 
 </main>
