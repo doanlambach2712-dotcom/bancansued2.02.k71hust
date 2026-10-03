@@ -49,6 +49,15 @@ html{
     scrollbar-gutter:stable;
 }
 body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--font);min-height:100%}
+    body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+main{
+    flex:1;
+}
 h1,h2,h3,h4,p{margin:0}
 button,input,select,textarea{font:inherit;color:inherit}
 a{color:var(--red-text)}
