@@ -78,6 +78,79 @@ a{color:var(--red-text)}
 .b3{font-size:12.5px;font-weight:700;letter-spacing:.05em;color:var(--red-text);margin-top:3px}
 .term{flex:none;background:var(--gold);color:var(--on-gold);font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;white-space:nowrap}
 
+.account-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:none;
+}
+
+.account-box{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  background:var(--surface-2);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:7px 11px;
+  min-width:210px;
+}
+
+.account-icon{
+  width:32px;
+  height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+  border-radius:50%;
+  background:var(--red-soft);
+  color:var(--red-text);
+  font-weight:700;
+  font-size:14px;
+}
+
+.account-info{
+  min-width:0;
+  line-height:1.3;
+}
+
+.account-label{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:600;
+}
+
+.account-name{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:150px;
+}
+
+.account-logout{
+  appearance:none;
+  border:1px solid var(--line-strong);
+  background:var(--surface);
+  color:var(--ink);
+  padding:7px 10px;
+  border-radius:6px;
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.account-logout:hover{
+  background:var(--red-soft);
+  color:var(--red-text);
+  border-color:var(--red);
+}
+    
 /* ===== Tabs ===== */
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
 .tabs-in{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
@@ -274,6 +347,23 @@ textarea.copybox{min-height:200px;font-family:ui-monospace,Menlo,Consolas,monosp
   dl.kv dd{padding-top:0;padding-bottom:10px}
   dialog{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0}
 }
+    .account-area{
+  width:100%;
+  flex-wrap:wrap;
+}
+
+.account-box{
+  flex:1 1 auto;
+  min-width:0;
+}
+
+.account-logout{
+  flex:none;
+}
+
+.account-name{
+  max-width:120px;
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media print{.tabs,.tools,.btn,.pd-btns,#toast{display:none!important}.panel[hidden]{display:none}}
 </style>
@@ -290,7 +380,24 @@ textarea.copybox{min-height:200px;font-family:ui-monospace,Menlo,Consolas,monosp
         <h1 class="b3">HỆ THỐNG THÔNG TIN QUẢN LÝ LỚP NỘI BỘ</h1>
       </div>
     </div>
-    <div class="term">Nhiệm kì 2026 - 2027</div>
+<div class="account-area">
+
+  <div class="account-box">
+    <div class="account-icon" id="accountIcon">👤</div>
+
+    <div class="account-info">
+      <span class="account-label">TÀI KHOẢN ĐANG ĐĂNG NHẬP</span>
+      <span class="account-name" id="accountName">Đang tải...</span>
+    </div>
+  </div>
+
+  <button type="button" class="account-logout" id="logoutBtn">
+    Đăng xuất
+  </button>
+
+  <div class="term">Nhiệm kì 2026 - 2027</div>
+
+</div>
   </div>
 </header>
 
@@ -1047,6 +1154,46 @@ function refreshFundTop() {
   const p = fund.periods.find(x => x.id === ui.period), m = $('#pdMeta');
   if (p && m) m.innerHTML = metaHTML(p);
 }
+
+// ===== TÀI KHOẢN ĐANG ĐĂNG NHẬP =====
+const currentUserName = sessionStorage.getItem('user_fullname') || 'Không xác định';
+const currentUserStudentId = sessionStorage.getItem('user_studentid') || '';
+
+const accountNameEl = document.getElementById('accountName');
+const accountIconEl = document.getElementById('accountIcon');
+const logoutBtn = document.getElementById('logoutBtn');
+
+if (accountNameEl) {
+  accountNameEl.textContent = currentUserName;
+}
+
+if (accountIconEl) {
+  const initials = currentUserName
+    .trim()
+    .split(/\s+/)
+    .slice(-1)[0]
+    ?.charAt(0)
+    .toUpperCase();
+
+  accountIconEl.textContent = initials || '👤';
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    const confirmed = confirm(
+      `Bạn có chắc muốn đăng xuất tài khoản "${currentUserName}" không?`
+    );
+
+    if (!confirmed) return;
+
+    sessionStorage.removeItem('class_access_granted');
+    sessionStorage.removeItem('user_fullname');
+    sessionStorage.removeItem('user_studentid');
+
+    window.location.href = 'login.html';
+  });
+}
+
 
 // khởi tạo
 const hash = (location.hash || '').replace('#p', '');
