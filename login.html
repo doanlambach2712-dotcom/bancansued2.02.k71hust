@@ -175,11 +175,25 @@ footer strong { color: var(--red-text); }
 </footer>
 
 <script>
-// 1. Khai báo danh sách Họ tên (đã chuẩn hóa không dấu) kèm Mật khẩu tương ứng
 const USERS_DB = {
-  "DOAN LAM BACH": "bachBiThu@Hust26",
-  "NGUYEN KHANH LY": "lyLopTruong@Hust26",
-  "TO BAO NGAN": "nganUyVien@Hust26"
+  "DOAN LAM BACH": {
+    studentId: "202617133",
+    dob: "2008-12-27",
+    password: "bachBiThu@Hust26"
+  },
+
+  "NGUYEN KHANH LY": {
+    studentId: "202616172",
+    dob: "2007-10-17",
+    password: "lyLopTruong@Hust26"
+  },
+
+  "TO BAO NGAN": {
+    studentId: "202616347",
+    dob: "2008-09-10",
+    password: "nganUyVien@Hust26"
+  }
+};
 };
 
 // 2. Hàm loại bỏ dấu tiếng Việt chuẩn
@@ -204,34 +218,37 @@ function handleAuth(e) {
   alertBox.style.display = 'none';
   alertBox.className = 'alert';
 
-  // Chuẩn hóa tên nhập vào
-  const normalizedInputName = removeVietnameseTones(fullNameInput).toUpperCase();
+// Chuẩn hóa tên nhập vào
+const normalizedInputName = removeVietnameseTones(fullNameInput).toUpperCase();
 
-  // Lấy mật khẩu chuẩn tương ứng với Họ tên vừa nhập
-  const expectedPassword = USERS_DB[normalizedInputName];
+// Lấy thông tin tài khoản tương ứng
+const user = USERS_DB[normalizedInputName];
 
-  // Kiểm tra: Tên phải nằm trong danh sách VÀ mật khẩu phải trùng khớp VÀ đã điền đầy đủ MSSV, Ngày sinh
-  if (expectedPassword && expectedPassword === passwordInput && studentIdInput !== "" && dobInput !== "") {
+// Kiểm tra đồng thời Họ tên + MSSV + Ngày sinh + Mật khẩu
+if (
+  user &&
+  user.studentId === studentIdInput &&
+  user.dob === dobInput &&
+  user.password === passwordInput
+) {
     // ĐÚNG: Thông báo và lưu trạng thái
     alertBox.className = 'alert alert-success';
     alertBox.innerHTML = `<strong>Xác thực thành công!</strong><br>Chào mừng <strong>${fullNameInput}</strong>. Đang chuyển hướng vào hệ thống...`;
     alertBox.style.display = 'block';
 
-sessionStorage.setItem('class_access_granted', 'true');
-sessionStorage.setItem('user_fullname', fullNameInput);
-sessionStorage.setItem('user_studentid', studentIdInput);
+    sessionStorage.setItem('class_access_granted', 'true');
+    sessionStorage.setItem('user_fullname', fullNameInput);
+    sessionStorage.setItem('user_studentid', studentIdInput);
 
-    // Chuyển hướng tới index.html sau 1.2s
     setTimeout(() => {
       window.location.href = "index.html";
     }, 1200);
 
-  } else {
-    // SAI: Báo lỗi không có quyền / nhập sai thông tin
+} else {
+    // SAI: Từ chối truy cập
     alertBox.className = 'alert alert-error';
-    alertBox.innerHTML = '<strong>Xác thực thất bại!</strong><br>Thông tin Họ tên hoặc Mật khẩu không chính xác. Vui lòng kiểm tra lại hoặc liên hệ Ban cán sự lớp.';
+    alertBox.innerHTML = '<strong>Xác thực thất bại!</strong><br>Thông tin xác thực không chính xác. Vui lòng kiểm tra lại hoặc liên hệ Ban cán sự lớp.';
     alertBox.style.display = 'block';
-  }
 }
 </script>
 
