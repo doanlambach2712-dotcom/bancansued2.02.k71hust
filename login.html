@@ -195,60 +195,84 @@ const USERS_DB = {
   }
 };
 
-// 2. Hàm loại bỏ dấu tiếng Việt chuẩn
+
+// Hàm loại bỏ dấu tiếng Việt
 function removeVietnameseTones(str) {
   if (!str) return "";
+
   return str.normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
-            .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D')
             .trim();
 }
 
+
 function handleAuth(e) {
   e.preventDefault();
-  
-  // Lấy giá trị từ cả 4 ô nhập liệu (Họ tên, MSSV, Ngày sinh, Mật khẩu)
+
+  // Lấy dữ liệu từ 4 ô nhập
   const fullNameInput = document.getElementById('fullName').value.trim();
   const studentIdInput = document.getElementById('studentId').value.trim();
   const dobInput = document.getElementById('dob').value;
   const passwordInput = document.getElementById('password').value;
+
   const alertBox = document.getElementById('alertBox');
 
   alertBox.style.display = 'none';
   alertBox.className = 'alert';
 
-// Chuẩn hóa tên nhập vào
-const normalizedInputName = removeVietnameseTones(fullNameInput).toUpperCase();
+  // Chuẩn hóa họ tên
+  const normalizedInputName =
+    removeVietnameseTones(fullNameInput).toUpperCase();
 
-// Lấy thông tin tài khoản tương ứng
-const user = USERS_DB[normalizedInputName];
+  // Tìm tài khoản theo họ tên
+  const user = USERS_DB[normalizedInputName];
 
-// Kiểm tra đồng thời Họ tên + MSSV + Ngày sinh + Mật khẩu
-if (
-  user &&
-  user.studentId === studentIdInput &&
-  user.dob === dobInput &&
-  user.password === passwordInput
-) {
-    // ĐÚNG: Thông báo và lưu trạng thái
+  // Kiểm tra ĐỒNG THỜI:
+  // 1. Họ tên
+  // 2. MSSV
+  // 3. Ngày sinh
+  // 4. Mật khẩu
+  if (
+    user &&
+    user.studentId === studentIdInput &&
+    user.dob === dobInput &&
+    user.password === passwordInput
+  ) {
+
+    // Xác thực thành công
     alertBox.className = 'alert alert-success';
-    alertBox.innerHTML = `<strong>Xác thực thành công!</strong><br>Chào mừng <strong>${fullNameInput}</strong>. Đang chuyển hướng vào hệ thống...`;
+
+    alertBox.innerHTML =
+      `<strong>Xác thực thành công!</strong><br>
+       Chào mừng <strong>${fullNameInput}</strong>.
+       Đang chuyển hướng vào hệ thống...`;
+
     alertBox.style.display = 'block';
 
+    // Lưu trạng thái đăng nhập
     sessionStorage.setItem('class_access_granted', 'true');
     sessionStorage.setItem('user_fullname', fullNameInput);
     sessionStorage.setItem('user_studentid', studentIdInput);
 
+    // Chuyển vào hệ thống
     setTimeout(() => {
       window.location.href = "index.html";
     }, 1200);
 
-} else {
-    // SAI: Từ chối truy cập
+  } else {
+
+    // Xác thực thất bại
     alertBox.className = 'alert alert-error';
-    alertBox.innerHTML = '<strong>Xác thực thất bại!</strong><br>Thông tin xác thực không chính xác. Vui lòng kiểm tra lại hoặc liên hệ Ban cán sự lớp.';
+
+    alertBox.innerHTML =
+      '<strong>Xác thực thất bại!</strong><br>' +
+      'Thông tin xác thực không chính xác. ' +
+      'Vui lòng kiểm tra lại hoặc liên hệ Ban cán sự lớp.';
+
     alertBox.style.display = 'block';
-}
+  }
 }
 </script>
 
