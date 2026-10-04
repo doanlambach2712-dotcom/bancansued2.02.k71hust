@@ -748,7 +748,7 @@ function renderStudents() {
   const groups = [...new Set(students.map(s => grpNoiO(s.noiO)))].sort();
   sel.innerHTML = '<option value="">Nơi ở: tất cả</option>' + groups.map(g => `<option ${g === cur ? 'selected' : ''}>${esc(g)}</option>`).join('');
   const a = filteredStudents();
-  $('#svCount').textContent = `Dữ liệu cập nhật đến 00:10 ngày 03/10/2026. Hiển thị ${a.length} / ${students.length} sinh viên`;
+  $('#svCount').textContent = `Dữ liệu cập nhật đến 10:00 ngày 04/10/2026. Hiển thị ${a.length} / ${students.length} sinh viên`;
   $('#svBody').innerHTML = a.length ? a.map(s => `
     <tr data-id="${esc(s.mssv)}">
       <td class="num">${s.stt}</td>
