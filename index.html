@@ -347,22 +347,46 @@ textarea.copybox{min-height:200px;font-family:ui-monospace,Menlo,Consolas,monosp
   dl.kv dd{padding-top:0;padding-bottom:10px}
   dialog{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0}
 }
-    .account-area{
-  width:100%;
-  flex-wrap:wrap;
-}
+@media (max-width:720px){
+  .wrap{padding:0 14px}
+  .masthead-in{flex-wrap:wrap;gap:10px}
+  .b2{font-size:16px}
+  .b3{font-size:11.5px}
+  .logo-tile img{width:40px;height:60px}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .bcs{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .fund-sum{grid-template-columns:repeat(2,1fr)}
+  .hide-sm{display:none}
+  .tools select{flex:1 1 140px;width:auto}
+  .name-btn{white-space:normal}
+  .amount-in{width:96px}
+  .ph h2{font-size:22px}
+  .form{grid-template-columns:1fr}
+  dl.kv{grid-template-columns:1fr}
+  dl.kv dt{padding-bottom:0}
+  dl.kv dd{padding-top:0;padding-bottom:10px}
+  dialog{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0}
 
-.account-box{
-  flex:1 1 auto;
-  min-width:0;
-}
+  /* Tài khoản trên màn hình nhỏ */
+  .account-area{
+    width:100%;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+  }
 
-.account-logout{
-  flex:none;
-}
+  .account-box{
+    flex:1 1 auto;
+    min-width:0;
+  }
 
-.account-name{
-  max-width:120px;
+  .account-logout{
+    flex:none;
+  }
+
+  .account-name{
+    max-width:120px;
+  }
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media print{.tabs,.tools,.btn,.pd-btns,#toast{display:none!important}.panel[hidden]{display:none}}
